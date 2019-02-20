@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Parašai 2019</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+    }
+
+    #main {
+      display: table;
+    }
+
+    #main>div {
+      display: table-row;
+    }
+
+    span {
+      display: table-cell;
+      padding: 2px 5px;
+    }
+
+    .name {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Rezultatai atnaujanami kas 10 sekundziu</h1>
+  <div id="main"></div>
+  <script>
+    function handleLoad() {
+
+      var json = JSON.parse(this.responseText);
+      var items = json.slice;
+      var sortedItems = items.sort(function (a, b) {
+        return b.signedOverallCount - a.signedOverallCount;
+      });
+      var fragment = sortedItems.reduce(function (current, next) {
+        var node = document.createElement('div');
+        node.innerHTML += "<span class='count'>" + next.signedOverallCount + "</span>";
+        node.innerHTML += "<span class='name'>" + next.name + " " + next.surname + "</span>";
+        current.appendChild(node);
+        return current;
+      }, document.createDocumentFragment());
+
+
+      var main = document.getElementById('main');
+      main.innerHTML = '';
+      main.append(fragment);
+    }
+
+    function getData() {
+      var req = new XMLHttpRequest();
+      req.addEventListener("load", handleLoad);
+      req.open("GET", "/data");
+      req.send();
+    }
+
+    setInterval(getData, 5000);
+    getData();
+  </script>
+</body>
+
+</html>
