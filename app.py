@@ -7,7 +7,7 @@ from itertools import cycle
 import cfscrape
 import requests
 from fake_useragent import UserAgent
-from flask import Flask, jsonify, send_file
+from flask import Flask, send_file
 from redis import Redis
 
 app = Flask(__name__)
@@ -202,8 +202,8 @@ def cache_json(func):
             return value.decode()
 
         value = func(*args, **kwargs)
-        redis.setex(key, timedelta(seconds=10), value)
-        return jsonify(value)
+        redis.setex(key, timedelta(seconds=4), value)
+        return value.decode()
 
     return wrap
 
