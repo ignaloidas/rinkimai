@@ -228,4 +228,4 @@ def data():
         # proxies={"http": proxy, "https": proxy},
     )
     print(answ.content)
-    return answ.content.decode()
+    return answ.content
